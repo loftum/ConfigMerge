@@ -44,6 +44,10 @@ Web.manyinputs.config = inputFolder + Web. + [input1, input2, input3, input4] + 
 
 ### Merge config files on build
 Add a pre build event to your project:
+```
 path\to\ConfigMerge.exe -recipe:"$(ProjectDir)Web.config.recipe"
+```
 
+## Under the hood:
+ConfigMerge parses the recipe and creates a lambda expression that is compiled and invoked with a ConfigTransformer. The ConfigTransformer then merges the given inputs, and writes the given outputs.
 
