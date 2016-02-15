@@ -36,6 +36,10 @@ outputFolder + Web.test.config = inputFolder + [Web.root.config, Web.test.overri
 
 # Create ./output/Web.prod.config by merging ./input/Web.root.config and input/Web.prod.override.config
 outputFolder + Web.prod.config = inputFolder + [Web.root.config, Web.prod.override.config];
+
+# Create output based on input/Web.input1.config, input/Web.input2.config, etc.
+Web.manyinputs.config = inputFolder + Web. + [input1, input2, input3, input4] + .config;
+
 ```
 
 ### Merge config files on build
