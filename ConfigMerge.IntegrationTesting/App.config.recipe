@@ -1,1 +1,9 @@
-﻿App.config = Inputs/ + [App.root.config, App.override.config];
+﻿# This is a comment
+
+# Folder "Inputs/" stored in variable inputFolder
+var inputFolder = Inputs/;
+
+# Creates App.config by merging Inputs/App.root.config and Inputs/App.override.config
+# Last file wins
+# Non-existing files are ignored
+App.config = inputFolder + [App.root.config, App.override.config, Nonexisting.config];
