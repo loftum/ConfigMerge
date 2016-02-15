@@ -2,7 +2,7 @@
 Web/App.config merge tool based on https://github.com/andreakn/ConfigStitcher
 
 ---
-ConfigMerge lets you merge multiple input config files into a output config files, without the need of xdt transforms.
+ConfigMerge lets you merge multiple config files without the need of xdt transforms.
 
 The transformation is specified like this:
 ```
