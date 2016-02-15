@@ -21,14 +21,14 @@ ConfigMerge.exe -recipe:Web.config.recipe
 
 #### Web.config.recipe example:
 ```
-# Folder "Inputs/" stored in variable inputFolder
-var inputFolder = Inputs/;
+# Folder "input/" stored in variable inputFolder
+var inputFolder = input/;
 
-# Creates the file ./output/Web.config by merging ./Inputs/Web.root.config, Inputs/Web.override.config and Inputs/Nonexisting.config
+# Creates the file ./output/Web.config by merging ./input/Web.root.config, input/Web.override.config and input/Nonexisting.config
 # Non-absolute file paths are relative to Web.config.recipe's parent folder
 # Last file wins
 # Non-existing files are ignored
-Outputs/ + Web.config = inputFolder + [Web.root.config, Web.override.config, Nonexisting.config];
+output/ + Web.config = inputFolder + [Web.root.config, Web.override.config, Nonexisting.config];
 ```
 
 ### Merge config files on build
