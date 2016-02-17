@@ -2,7 +2,7 @@
 Web/App.config merge tool based on https://github.com/andreakn/ConfigStitcher
 
 ---
-ConfigMerge lets you merge multiple config files without the need of xdt transforms.
+ConfigMerge lets you merge multiple config files without the need of xdt transforms. It also allows for independent local config files, typically for development environments, since nonexisting files are ignored. A developer would typically store his or her override settings in a file outside of (or ignored in) source control.
 
 ## Example transformation
 App.root.config:
