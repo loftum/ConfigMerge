@@ -104,9 +104,11 @@ outputFolder + Web.test.config = inputFolder + [Web.root.config, Web.test.overri
 outputFolder + Web.prod.config = inputFolder + [Web.root.config, Web.prod.override.config];
 
 # Create output based on input/Web.input1.config, input/Web.input2.config, etc.
-Web.manyinputs.config = inputFolder + Web. + [input1, input2, input3, input4] + .config;
-
+Web.manyinputs.config = inputFolder + "Web." + [input1, input2, input3, input4] + .config;
 ```
+
+- String values _may_ be enclosed in double quotes if they contain alphanumerics, '.', '/' or '\'
+- String values **MUST** be enclosed in double quotes if they contain any other characters
 
 ### Merge config files on build
 Add a pre build event to your project:
