@@ -1,4 +1,6 @@
-﻿namespace ConfigMerge.Core.Merging
+﻿using System;
+
+namespace ConfigMerge.Core.Merging
 {
     public class KeyValue
     {
@@ -9,6 +11,26 @@
         {
             Key = key;
             Value = value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as KeyValue);
+        }
+
+        public bool Equals(KeyValue other)
+        {
+            return other != null &&
+                   string.Equals(Key, other.Key, StringComparison.InvariantCultureIgnoreCase) &&
+                   string.Equals(Value, other.Value, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((Key?.ToLowerInvariant().GetHashCode() ?? 0) * 397) ^ (Value?.ToLowerInvariant().GetHashCode() ?? 0);
+            }
         }
     }
 }

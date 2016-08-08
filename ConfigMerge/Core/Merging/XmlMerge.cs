@@ -1,7 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Xml.Linq;
-using ConfigMerge.Common;
 using ConfigMerge.Logging;
 
 namespace ConfigMerge.Core.Merging
@@ -33,7 +31,8 @@ namespace ConfigMerge.Core.Merging
             {
                 return;
             }
-            if (ShouldDeleteNode(input))
+            var meta = GetMeta(input);
+            if (meta.ShouldDelete)
             {
                 Log.Trace($"{_source}: Remove {input}");
                 template.Remove();
@@ -53,85 +52,46 @@ namespace ConfigMerge.Core.Merging
                 }
                 return;
             }
+            MergeChildren(template, input);
+        }
 
+        private void MergeChildren(XElement template, XElement input)
+        {
+            var inputElements = input.Elements();
             var templateElements = template.Elements().ToArray();
-            var dataElements = input.Elements();
-            foreach (var dataNode in dataElements)
+            foreach (var inputElement in inputElements)
             {
-                var uniqueKey = GetUniqueKey(dataNode);
-                var shouldDeleteDataNode = ShouldDeleteNode(dataNode);
-                var matchingNodes = templateElements.Where(x => x.Name == dataNode.Name).ToArray();
-                if (!matchingNodes.Any() && !shouldDeleteDataNode)
+                var meta = GetMeta(inputElement);
+                var match = meta.GetMatch(templateElements);
+
+                if (match == null)
                 {
-                    Log.Trace($"{_source.FilePath}: Adding {dataNode}");
+                    if (meta.ShouldDelete)
+                    {
+                        continue;
+                    }
+                    Log.Trace($"{_source.FilePath}: Adding {inputElement}");
                     if (_options.EnableTrace)
                     {
-                        dataNode.SetAttributeValue("TRACE", TraceText("CREATED"));
+                        inputElement.SetAttributeValue("TRACE", TraceText("CREATED"));
                     }
-                    template.Add(dataNode);
-                    continue;
+                    template.Add(inputElement);
                 }
-
-                if (uniqueKey == null && matchingNodes.Count() > 1)
+                else
                 {
-                    throw new ApplicationException($"Cannot merge into file containing multiple undelimited equal siblings, needs attribute with name: {_options.UniqueAttributes.FriendlyCommaSeparated("or")}. The offender is: " + input);
-                }
-                if (uniqueKey == null && matchingNodes.Count() == 1)
-                {
-                    var templateNode = templateElements.First(x => x.Name == dataNode.Name);
-                    Merge(templateNode, dataNode);
-                    continue;
-                }
-
-                if (uniqueKey != null)
-                {
-                    var ambigous =
-                        templateElements.Count(
-                            x =>
-                            x.Attribute(uniqueKey.Key) != null &&
-                            string.Equals(x.Attribute(uniqueKey.Key).Value, uniqueKey.Value, StringComparison.CurrentCultureIgnoreCase)) > 1;
-                    if (ambigous)
-                    {
-                        throw new ApplicationException($"Cannot merge into file containing multiple equal siblings with same identifier, needs unique value for attribute with name: {_options.UniqueAttributes.FriendlyCommaSeparated("or")}. The offender is: " + input);
-                    }
-                    var templateNode = (from x in templateElements
-                                        where
-                                            x.Attribute(uniqueKey.Key) != null
-                                            && string.Equals(x.Attribute(uniqueKey.Key).Value, uniqueKey.Value, StringComparison.CurrentCultureIgnoreCase)
-                                        select x).FirstOrDefault();
-                    if (templateNode == null && !shouldDeleteDataNode)
-                    {
-                        if (_options.EnableTrace)
-                        {
-                            dataNode.SetAttributeValue("TRACE", TraceText("CREATED"));
-                        }
-                        Log.Trace($"{_source.FilePath}: Adding {dataNode}");
-                        template.Add(dataNode);
-                    }
-                    else
-                    {
-                        Merge(templateNode, dataNode);
-                    }
+                    Merge(match, inputElement);
                 }
             }
         }
 
-        private KeyValue GetUniqueKey(XElement element)
+        private ElementMeta GetMeta(XElement input)
         {
-            foreach (var key in _options.UniqueAttributes)
-            {
-                var elementsUnique = element.Attributes(key).ToArray();
-                if (elementsUnique.Length == 1)
-                {
-                    return new KeyValue(key, elementsUnique.Single().Value);
-                }
-            }
-            return null;
+            return new ElementMeta(input, _options);
         }
 
-        private void MergeAttributes(XElement template, XElement data)
+        private void MergeAttributes(XElement template, XElement input)
         {
-            foreach (var attribute in data.Attributes())
+            foreach (var attribute in input.Attributes())
             {
                 var value = attribute.Value == _options.DeleteKeyword ? null : attribute.Value;
 
@@ -141,12 +101,6 @@ namespace ConfigMerge.Core.Merging
                 }
                 template.SetAttributeValue(attribute.Name, value);
             }
-        }
-
-        private bool ShouldDeleteNode(XElement data)
-        {
-            var deleteattrib = data.Attributes(_options.DeleteKeyword).ToArray();
-            return deleteattrib.Length == 1 && bool.Parse(deleteattrib.First().Value);
         }
 
         private string TraceText(string operation)

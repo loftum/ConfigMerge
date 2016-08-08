@@ -67,8 +67,10 @@
     <Compile Include="Core\Lang\SourcePosition.cs" />
     <Compile Include="Core\Lang\Token.cs" />
     <Compile Include="Core\Lang\TokenExtensions.cs" />
+    <Compile Include="Core\Merging\ElementMeta.cs" />
     <Compile Include="Core\Merging\KeyValue.cs" />
     <Compile Include="Core\Merging\TransformOptions.cs" />
+    <Compile Include="Core\Merging\UniqueKey.cs" />
     <Compile Include="Core\Merging\XmlMerge.cs" />
     <Compile Include="Core\Merging\XmlSource.cs" />
     <Compile Include="Core\Merging\XmlMerger.cs" />

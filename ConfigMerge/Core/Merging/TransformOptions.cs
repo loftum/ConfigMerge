@@ -9,7 +9,7 @@
         public TransformOptions()
         {
             DeleteKeyword = "DELETEME";
-            UniqueAttributes = new[] { "id", "name", "key", "path", "virtualPath", "href", "namespace" };
+            UniqueAttributes = new[] { "id", "name", "key", "path", "virtualPath", "href", "namespace", "dependentAssembly/assemblyIdentity/name" };
         }
     }
 }

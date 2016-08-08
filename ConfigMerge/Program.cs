@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Configuration;
 using System.Diagnostics;
 using System.Text;
 using ConfigMerge.ConsoleArguments;
 using ConfigMerge.Core;
 using ConfigMerge.Core.Lang;
-using ConfigMerge.Core.Merging;
 using ConfigMerge.Logging;
 using ConfigMerge.Options;
 
