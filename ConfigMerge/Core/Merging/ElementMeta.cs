@@ -34,13 +34,13 @@ namespace ConfigMerge.Core.Merging
                 return null;
             }
             var matches = GetCandidates(elements);
-            if (UniqueKey == null && matches.Length > 1)
-            {
-                throw new ApplicationException($"Cannot merge into file containing multiple undelimited equal siblings, needs attribute with name: {_options.UniqueAttributes.FriendlyCommaSeparated("or")}. The offender is: {Element}");
-            }
             if (matches.Length > 1)
             {
-                throw new ApplicationException($"Cannot merge into file containing multiple equal siblings with same identifier, needs unique value for attribute with name: {_options.UniqueAttributes.FriendlyCommaSeparated("or")}. The offender is: {Element}");
+                if (UniqueKey == null)
+                {
+                    throw new ApplicationException($"Cannot merge multiple equal siblings, needs attribute with name: {_options.UniqueAttributes.FriendlyCommaSeparated("or")}. The offender is: {Element}");
+                }
+                throw new ApplicationException($"Cannot merge multiple siblings with same identifier, needs unique value for attribute with name: {_options.UniqueAttributes.FriendlyCommaSeparated("or")}. The offender is: {Element}");
             }
             return matches.SingleOrDefault();
         }

@@ -45,8 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Merging\AssemblyBindingOverrideTest.cs" />
+    <Compile Include="Core\Merging\AssemblyBindingMergeTest.cs" />
     <Compile Include="Core\Merging\XmlMergerTest.cs" />
+    <Compile Include="Core\Merging\XPathExtensions.cs" />
     <Compile Include="PreBuildEventTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestData.cs" />

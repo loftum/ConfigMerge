@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace ConfigMerge.Core.Merging
@@ -14,10 +15,16 @@ namespace ConfigMerge.Core.Merging
 
         public XDocument Merge(IEnumerable<XmlSource> inputs)
         {
-            var result = XDocument.Parse("<configuration></configuration>");
-            foreach (var xmlSource in inputs)
+            var inputList = inputs.ToList();
+            if (!inputList.Any())
             {
-                result = new XmlMerge(result, xmlSource, _options).Result;
+                return XDocument.Parse("<configuration></configuration>");
+            }
+
+            var result = inputList.First().Content;
+            foreach (var source in inputList.Skip(1))
+            {
+                result = new XmlMerge(result, source, _options).Result;
             }
             return result;
         }
