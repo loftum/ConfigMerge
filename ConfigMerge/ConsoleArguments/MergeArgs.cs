@@ -1,7 +1,6 @@
-﻿using ConfigMerge.ConsoleArguments;
-using ConfigMerge.Logging;
+﻿using ConfigMerge.Logging;
 
-namespace ConfigMerge
+namespace ConfigMerge.ConsoleArguments
 {
     public class MergeArgs
     {

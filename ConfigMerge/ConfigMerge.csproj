@@ -51,6 +51,7 @@
     <Compile Include="Collections\EnumerableExtensions.cs" />
     <Compile Include="Collections\ISuperEnumerator.cs" />
     <Compile Include="Collections\SuperEnumerator.cs" />
+    <Compile Include="ConsoleArguments\MergeArgs.cs" />
     <Compile Include="Core\ConfigTransformer.cs" />
     <Compile Include="Core\Formatting\CSharpishFormatter.cs" />
     <Compile Include="Core\Formatting\ExpressionExtensions.cs" />
@@ -78,11 +79,11 @@
     <Compile Include="Core\RecipeString.cs" />
     <Compile Include="Common\ObjectExtensions.cs" />
     <Compile Include="Common\StringExtensions.cs" />
+    <Compile Include="Meta\ProgramInfo.cs" />
     <Compile Include="Logging\ConsoleLogger.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\LoggerExtensions.cs" />
-    <Compile Include="MergeArgs.cs" />
     <Compile Include="Options\OverrideTransformOptions.cs" />
     <Compile Include="Options\RecipeSource.cs" />
     <Compile Include="Options\TransformOptionsProvider.cs" />

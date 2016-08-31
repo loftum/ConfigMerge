@@ -1,23 +1,19 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Text;
 using ConfigMerge.ConsoleArguments;
 using ConfigMerge.Core;
 using ConfigMerge.Core.Lang;
 using ConfigMerge.Logging;
+using ConfigMerge.Meta;
 using ConfigMerge.Options;
 
 namespace ConfigMerge
 {
     internal class Program
     {
-        private static readonly string ProcessName = Process.GetCurrentProcess().ProcessName;
-
-        private static string Greeting => $"{ProcessName} v1.0";
-
         private static int Main(string[] args)
         {
-            Console.WriteLine(Greeting);
+            Console.WriteLine(ProgramInfo.Greeting);
             if (args.NeedsHelp())
             {
                 PrintUsage();
@@ -43,7 +39,7 @@ namespace ConfigMerge
             catch (Exception ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"{ProcessName}: error: {ex.Message}");
+                Console.WriteLine($"{ProgramInfo.Name}: error: {ex.Message}");
                 Console.WriteLine(ex.StackTrace);
                 Console.ResetColor();
                 return ErrorCodes.Unhandled;
@@ -53,7 +49,7 @@ namespace ConfigMerge
         private static void PrintUsage()
         {
             var usage = new StringBuilder("Usage:").AppendLine()
-                .Append($"{ProcessName} ").AppendLine(Args.GetUsage<MergeArgs>());
+                .Append($"{ProgramInfo.Name} ").AppendLine(Args.GetUsage<MergeArgs>());
             Console.WriteLine(usage);
         }
     }
