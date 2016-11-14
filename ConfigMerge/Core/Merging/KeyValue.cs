@@ -13,6 +13,11 @@ namespace ConfigMerge.Core.Merging
             Value = value;
         }
 
+        public override string ToString()
+        {
+            return $"{Key}={Value}";
+        }
+
         public override bool Equals(object obj)
         {
             return Equals(obj as KeyValue);

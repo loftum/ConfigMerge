@@ -40,7 +40,15 @@ namespace ConfigMerge.Core.Merging
                 {
                     throw new ApplicationException($"Cannot merge multiple equal siblings, needs attribute with name: {_options.UniqueAttributes.FriendlyCommaSeparated("or")}. The offender is: {Element}");
                 }
-                throw new ApplicationException($"Cannot merge multiple siblings with same identifier, needs unique value for attribute with name: {_options.UniqueAttributes.FriendlyCommaSeparated("or")}. The offender is: {Element}");
+                
+                throw new ApplicationException($"Conflict: Multiple {Element.Parent.Name}/{UniqueKey}: {matches.FriendlyCommaSeparated("and")}");
+
+//                var conflictingKeys = matches.Select(_getUniqueKey).Where(k => k!= null).Distinct().ToList();
+//                if (conflictingKeys.Any())
+//                {
+//                    throw new ApplicationException($"Conflicting keys {conflictingKeys.FriendlyCommaSeparated("and")} in {Element}");
+//                }
+//                throw new ApplicationException($"Cannot merge multiple siblings with same identifier, needs unique value for attribute with name: {_options.UniqueAttributes.FriendlyCommaSeparated("or")}. The offender is: {Element}");
             }
             return matches.SingleOrDefault();
         }
